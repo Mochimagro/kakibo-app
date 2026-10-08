@@ -1,5 +1,7 @@
 import React from "react";
 import { Box, Stack, Separator, Text, Flex } from "@chakra-ui/react";
+import { useIncomeTransactions } from "./hooks/useIncomeTransactions";
+import { useExpenseTransactions } from "./hooks/useExpenseTransactions";
 
 type Transaction = {
   id: number;
@@ -11,15 +13,16 @@ type Transaction = {
 export const RecentIncomeTransactionList: React.FC<{
   maxTransactions: number;
 }> = ({ maxTransactions }) => {
-  const transactionList: Transaction[] = [
-    { id: 1, item: "個人収入", amount: 1400, date: "2024-06-01" },
-    { id: 2, item: "収入", amount: 800, date: "2024-06-05" },
-    { id: 3, item: "贈り物", amount: 500, date: "2024-06-10" },
-    { id: 4, item: "投資収益", amount: 800, date: "2024-06-15" },
-    { id: 5, item: "ボーナス", amount: 1500, date: "2024-06-20" },
-  ];
+  const { transactionList } = useIncomeTransactions();
 
-  const recentTransactions = transactionList.slice(0, maxTransactions);
+  if (!transactionList) {
+    return <text>収入データがありません</text>;
+  }
+
+  const recentTransactions = transactionList.transactions.slice(
+    0,
+    maxTransactions,
+  );
 
   return <TransactionList transactions={recentTransactions} />;
 };
@@ -27,14 +30,15 @@ export const RecentIncomeTransactionList: React.FC<{
 export const RecentExpenseTransactionList: React.FC<{
   maxTransactions: number;
 }> = ({ maxTransactions }) => {
-  const transactionList: Transaction[] = [
-    { id: 1, item: "食費", amount: -200, date: "2024-06-02" },
-    { id: 2, item: "交通費", amount: -100, date: "2024-06-06" },
-    { id: 3, item: "娯楽費", amount: -150, date: "2024-06-11" },
-    { id: 4, item: "光熱費", amount: -300, date: "2024-06-16" },
-    { id: 5, item: "雑費", amount: -50, date: "2024-06-21" },
-  ];
-  const recentTransactions = transactionList.slice(0, maxTransactions);
+  const { transactionList } = useExpenseTransactions();
+  if (!transactionList) {
+    return <text>支出データがありません</text>;
+  }
+
+  const recentTransactions = transactionList.transactions.slice(
+    0,
+    maxTransactions,
+  );
   return <TransactionList transactions={recentTransactions} />;
 };
 
