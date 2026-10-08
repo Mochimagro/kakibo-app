@@ -1,4 +1,5 @@
 import { Header } from "@/components/Header";
+import { useAddTransactions } from "@/hooks/useAddTransactions";
 import {
   Button,
   Center,
@@ -20,23 +21,33 @@ function InputPage() {
   const [item, setItem] = React.useState("");
   const [amount, setAmount] = React.useState("");
   const [date, setDate] = React.useState("");
+  const { addTransaction, createTransactionData } = useAddTransactions();
 
   const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // フォームのデータを登録する関数
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     // amountを数値に変換
-    let adjustedAmount = Number(amount);
-    if (transactionType === "expense" && adjustedAmount > 0) {
-      adjustedAmount = -adjustedAmount;
-    }
-    console.log({
+    const adjustedAmount = Number(amount);
+
+    // 送信データを作成
+    const transactionData = createTransactionData(
+      transactionType,
       item,
       adjustedAmount,
       date,
-    });
+    );
 
-    navigate("/");
+    try {
+      await addTransaction(transactionData);
+      // 登録成功後はトップページへ遷移
+      navigate("/");
+    } catch (err) {
+      alert("取引の追加に失敗しました");
+      console.error(err);
+    }
   };
 
   return (
@@ -106,7 +117,7 @@ function InputPage() {
             {/* 登録・キャンセルボタン */}
             <HStack width="sm" mt={4} gap={3}>
               <Button
-                type="button"
+                type="submit"
                 color="gray.500"
                 variant="outline"
                 flex={1}

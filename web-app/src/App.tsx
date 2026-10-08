@@ -8,12 +8,25 @@ import {
   Heading,
 } from "@chakra-ui/react";
 import { FaPlus } from "react-icons/fa";
+import { Route, Routes, useNavigate } from "react-router";
+import InputPage from "./pases/Input";
 import {
   RecentExpenseTransactionList,
   RecentIncomeTransactionList,
 } from "./TransactionList";
 
 function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<HomePage />} />
+      <Route path="/input" element={<InputPage />} />
+    </Routes>
+  );
+}
+
+function HomePage() {
+  const navigate = useNavigate();
+
   return (
     <>
       <Box
@@ -30,7 +43,11 @@ function App() {
       </Box>
       <Container as="main" maxW="4xl" py={6}>
         <Flex justify="flex-end">
-          <Button colorPalette="teal" fontWeight="bold">
+          <Button
+            colorPalette="teal"
+            fontWeight="bold"
+            onClick={() => navigate("/input")}
+          >
             <FaPlus />
             登録
           </Button>
