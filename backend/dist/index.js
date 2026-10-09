@@ -1,4 +1,3 @@
-import { serve } from "@hono/node-server";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { env } from "./env.js";
@@ -33,12 +32,12 @@ app.get("/transactions", async (c) => {
     if (type === "income" || type === "expense") {
         // typeがincomeの場合はamount > 0,
         // expenseの場合はamount < 0の条件をクエリに追加する
-        const addTypeQuery = type === "income" ? `WHERE amount > 0` : `WHERE amount < 0`;
+        const addTypeQuery = type === "income" ? ` WHERE amount > 0` : ` WHERE amount < 0`;
         historyQuery += addTypeQuery;
         countQuery += addTypeQuery;
     }
     // 取得順は日付の降順とする
-    historyQuery += `ORDER BY date DESC`;
+    historyQuery += ` ORDER BY date DESC`;
     // クエリ実行
     const historyResult = await client.query(historyQuery, params);
     const countResult = await client.query(countQuery, params);
@@ -87,18 +86,14 @@ app.post("/transactions", async (c) => {
     // ステータスコード201返却
     return c.json(newTransaction, 201);
 });
-serve({
-    fetch: app.fetch,
-    port: 3000,
-}, (info) => {
-    console.log(`Server is running on http://localhost:${info.port}`);
-});
+// PostgreSQLクライアントの初期化
 const client = new Client({
-    host: "localhost",
-    port: 5432,
-    database: "kakeibo_db",
-    user: "postgres",
-    password: "mysecretpassword",
+    host: env.DATABASE_HOST,
+    port: env.DATABASE_PORT,
+    database: env.DATABASE_NAME,
+    user: env.DATABASE_USER,
+    password: env.DATABASE_PASSWORD,
+    ssl: { rejectUnauthorized: false },
 });
 await client.connect();
 const toYMD = (d) => {
@@ -107,3 +102,4 @@ const toYMD = (d) => {
     const day = String(d.getDate()).padStart(2, "0");
     return `${year}-${month}-${day}`;
 };
+export default app;
