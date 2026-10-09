@@ -2,7 +2,6 @@ import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { env } from "./env.js";
 import { Client } from "pg";
-import { date, string } from "zod";
 const app = new Hono();
 app.use("/*", cors({
     origin: [env.FRONTEND_URL],
