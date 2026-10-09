@@ -1,4 +1,3 @@
-import { serve } from "@hono/node-server";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { env } from "./env.js";
@@ -120,22 +119,14 @@ app.post("/transactions", async (c) => {
   return c.json(newTransaction, 201);
 });
 
-serve(
-  {
-    fetch: app.fetch,
-    port: 3000,
-  },
-  (info) => {
-    console.log(`Server is running on http://localhost:${info.port}`);
-  },
-);
-
+// PostgreSQLクライアントの初期化
 const client = new Client({
-  host: "localhost",
-  port: 5432,
-  database: "kakeibo_db",
-  user: "postgres",
-  password: "mysecretpassword",
+  host: env.DATABASE_HOST,
+  port: env.DATABASE_PORT,
+  database: env.DATABASE_NAME,
+  user: env.DATABASE_USER,
+  password: env.DATABASE_PASSWORD,
+  ssl: { rejectUnauthorized: false },
 });
 
 await client.connect();
@@ -147,3 +138,4 @@ const toYMD = (d: Date) => {
 
   return `${year}-${month}-${day}`;
 };
+export default app;
