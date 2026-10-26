@@ -1,5 +1,6 @@
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { TagInput } from "@/components/TagInput";
 import { useAddTransactions } from "@/hooks/useAddTransactions";
 import {
   Button,
@@ -104,14 +105,7 @@ function InputPage() {
             </RadioGroup.Root>
 
             {/* フォーム部分 */}
-            <Field.Root>
-              <Field.Label>タグ</Field.Label>
-              <Input
-                placeholder="タグを入力してください（任意）"
-                value={tag}
-                onChange={(e) => setTag(e.target.value)}
-              />
-            </Field.Root>
+            <TagInput value={tag} onChange={setTag} />
 
             <Field.Root required>
               <Field.Label>項目</Field.Label>
