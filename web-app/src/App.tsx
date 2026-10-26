@@ -42,7 +42,14 @@ function HomePage() {
           シンプル家計簿
         </Text>
       </Box>
-      <Container as="main" maxW="4xl" py={8}>
+      <Container
+        as="main"
+        maxW="4xl"
+        py={8}
+        display="flex"
+        flexDirection="column"
+        gap={4}
+      >
         <TotalTransactions />
         <Flex justify="flex-end">
           <Button
@@ -54,12 +61,14 @@ function HomePage() {
             登録
           </Button>
         </Flex>
-        <SummaryCard title="収入履歴">
-          <RecentIncomeTransactionList maxTransactions={3} />
-        </SummaryCard>
-        <SummaryCard title="支出履歴">
-          <RecentExpenseTransactionList maxTransactions={3} />
-        </SummaryCard>
+        <Flex width="full" align="stretch" gap={4}>
+          <SummaryCard title="収入履歴">
+            <RecentIncomeTransactionList maxTransactions={3} />
+          </SummaryCard>
+          <SummaryCard title="支出履歴">
+            <RecentExpenseTransactionList maxTransactions={3} />
+          </SummaryCard>
+        </Flex>
       </Container>
     </>
   );
@@ -70,7 +79,7 @@ const SummaryCard: React.FC<{
   children: React.ReactNode;
 }> = ({ title, children }) => {
   return (
-    <Card.Root variant="elevated">
+    <Card.Root variant="elevated" flex={1} minW={0}>
       <Card.Header>
         <Heading size="md">{title}</Heading>
       </Card.Header>

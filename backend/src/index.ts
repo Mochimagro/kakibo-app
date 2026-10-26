@@ -42,7 +42,7 @@ app.get("/transactions", async (c) => {
   }
 
   // 履歴取得クエリの共通部分
-  let historyQuery = `SELECT id, item, amount, date FROM transactions`;
+  let historyQuery = `SELECT id, item, tag, amount, date FROM transactions`;
   // 履歴カウントクエリの共通部分
   let countQuery = `SELECT COUNT(*) as total FROM transactions`;
   // パラメータの配列
@@ -67,6 +67,7 @@ app.get("/transactions", async (c) => {
   const transactions = historyResult.rows.map((row) => ({
     id: parseInt(row.id),
     item: row.item,
+    tag: row.tag ?? null,
     amount: parseFloat(row.amount), // 実際の値（正負含む）を返す
     date: new Date(row.date).toISOString().split("T")[0],
   }));
@@ -89,7 +90,7 @@ app.get("/transactions", async (c) => {
 // POST /transactions - 取引情報の登録
 app.post("/transactions", async (c) => {
   const body = await c.req.json();
-  const { item, amount, date } = body; // ボディパラメータ抽出
+  const { item, tag, amount, date } = body; // ボディパラメータ抽出
 
   // バリデーション
   if (!item || amount === undefined || !date) {
@@ -109,14 +110,15 @@ app.post("/transactions", async (c) => {
 
   // DBへの登録処理を実行（追加）
   const result = await client.query(
-    `INSERT INTO transactions (item, amount, date) VALUES ($1, $2, $3) RETURNING id, item, amount, date`,
-    [item, amount, date]
+    `INSERT INTO transactions (item, tag, amount, date) VALUES ($1, $2, $3, $4) RETURNING id, item, tag, amount, date`,
+    [item, tag ?? null, amount, date]
   );
 
   // 登録されたデータを整形（追加）
   const newTransaction = {
     id: parseInt(result.rows[0].id),
     item: result.rows[0].item,
+    tag: result.rows[0].tag ?? null,
     amount: parseFloat(result.rows[0].amount),
     date: result.rows[0].date
   }

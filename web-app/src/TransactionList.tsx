@@ -2,13 +2,7 @@ import React from "react";
 import { Box, Stack, Separator, Text, Flex } from "@chakra-ui/react";
 import { useIncomeTransactions } from "./hooks/useIncomeTransactions";
 import { useExpenseTransactions } from "./hooks/useExpenseTransactions";
-
-type Transaction = {
-  id: number;
-  item: string;
-  amount: number;
-  date: string;
-};
+import type { Transaction } from "./hooks/transactions";
 
 export const RecentIncomeTransactionList: React.FC<{
   maxTransactions: number;
@@ -67,6 +61,11 @@ const TransactionListItem: React.FC<{ transaction: Transaction }> = ({
   return (
     <Flex justify="space-between" alignItems="center" py={2}>
       <Box>
+        {transaction.tag && (
+          <Text color="gray.500" fontSize="xs">
+            {transaction.tag}
+          </Text>
+        )}
         <Text>{transaction.item}</Text>
         <Text color="gray.400" fontSize="sm">
           {formatDate(transaction.date)}

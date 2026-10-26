@@ -19,6 +19,7 @@ export const useAddTransactions = () => {
         },
         body: JSON.stringify({
           item: transaction.item,
+          tag: transaction.tag,
           amount: transaction.amount,
           date: transaction.date,
         }),
@@ -44,12 +45,14 @@ export const useAddTransactions = () => {
     item: string,
     amount: number,
     date: string,
+    tag: string,
   ): Omit<Transaction, "id"> => {
     // typeがincomeの場合はamountをそのまま、expenseの場合はふの数にする
     const adjustedAmount =
       type === "income" ? Math.abs(amount) : -Math.abs(amount);
     return {
       item,
+      tag: tag || null,
       amount: adjustedAmount,
       date,
     };

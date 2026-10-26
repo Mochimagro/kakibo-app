@@ -1,6 +1,7 @@
 export type Transaction = {
   id: number;
   item: string;
+  tag: string | null;
   amount: number;
   date: string;
 };
