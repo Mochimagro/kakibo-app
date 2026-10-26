@@ -21,6 +21,8 @@ function InputPage() {
   const [item, setItem] = React.useState("");
   const [amount, setAmount] = React.useState("");
   const [date, setDate] = React.useState("");
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const isSubmittingRef = React.useRef(false);
   const { addTransaction, createTransactionData } = useAddTransactions();
 
   const navigate = useNavigate();
@@ -28,6 +30,11 @@ function InputPage() {
   // フォームのデータを登録する関数
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isSubmittingRef.current) {
+      return;
+    }
+    isSubmittingRef.current = true;
+    setIsSubmitting(true);
 
     // amountを数値に変換
     const adjustedAmount = Number(amount);
@@ -42,9 +49,12 @@ function InputPage() {
 
     try {
       await addTransaction(transactionData);
+      setIsSubmitting(false);
       // 登録成功後はトップページへ遷移
       navigate("/");
     } catch (err) {
+      isSubmittingRef.current = false;
+      setIsSubmitting(false);
       alert("取引の追加に失敗しました");
       console.error(err);
     }
@@ -122,8 +132,10 @@ function InputPage() {
                 variant="outline"
                 flex={1}
                 fontWeight="bold"
+                disabled={isSubmitting}
+                opacity={isSubmitting ? 0.5 : 1}
               >
-                登録
+                {isSubmitting ? "追加中..." : "登録"}
               </Button>
             </HStack>
           </VStack>
