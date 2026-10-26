@@ -5,7 +5,7 @@ import { FaPlus } from "react-icons/fa";
 import { useNavigate } from "react-router";
 import type { Transaction } from "../hooks/transactions";
 
-import PieChartGraph from "./PieChartGraph";
+import PieChartGraph from "../components/PieChartGraph";
 import {
   RecentExpenseTransactionList,
   RecentIncomeTransactionList,
