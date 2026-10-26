@@ -1,6 +1,7 @@
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import type { Transaction, TransactionListInfo } from "@/hooks/transactions";
+import type { Transaction } from "@/hooks/transactions";
+import { getTransactions } from "@/services/transactions";
 import {
   Card,
   Container,
@@ -11,8 +12,6 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 
-const BASE_URL = import.meta.env.VITE_API_BASE_URL;
-
 function DatePage() {
   const [transactions, setTransactions] = React.useState<Transaction[]>();
   const [isLoading, setIsLoading] = React.useState(true);
@@ -21,11 +20,7 @@ function DatePage() {
   React.useEffect(() => {
     const loadTransactions = async () => {
       try {
-        const response = await fetch(`${BASE_URL}/transactions?type=all`);
-        if (!response.ok) {
-          throw new Error("取引データの取得に失敗しました");
-        }
-        const data = (await response.json()) as TransactionListInfo;
+        const data = await getTransactions("all");
         setTransactions(data.transactions);
       } catch (err) {
         setError(

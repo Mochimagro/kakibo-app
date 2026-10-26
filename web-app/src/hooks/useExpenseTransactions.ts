@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import type { TransactionListInfo, TransactionsHooks } from "./transactions";
-const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+import { getTransactions } from "@/services/transactions";
 
 export const useExpenseTransactions = (): TransactionsHooks => {
   // stateの定義
@@ -12,14 +12,7 @@ export const useExpenseTransactions = (): TransactionsHooks => {
     setIsLoading(true);
     setError(null);
     try {
-      // 支出データの取得
-      const response = await fetch(`${BASE_URL}/transactions?type=expense`);
-      // データの取得
-      if (!response.ok) {
-        throw new Error("支出データの取得に失敗しました");
-      }
-      const data = (await response.json()) as TransactionListInfo;
-      setExpenseList(data);
+      setExpenseList(await getTransactions("expense"));
     } catch (err) {
       setError(
         err instanceof Error ? err : new Error("不明なエラーが発生しました"),

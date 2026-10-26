@@ -1,7 +1,6 @@
 import { useState } from "react";
 import type { Transaction } from "./transactions";
-
-const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+import { addTransaction as saveTransaction } from "@/services/transactions";
 
 export const useAddTransactions = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -11,22 +10,7 @@ export const useAddTransactions = () => {
     try {
       setIsLoading(true);
       setError(null);
-      // 取引追加API呼び出し
-      const response = await fetch(`${BASE_URL}/transactions`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          item: transaction.item,
-          tag: transaction.tag,
-          amount: transaction.amount,
-          date: transaction.date,
-        }),
-      });
-      if (!response.ok) {
-        throw new Error("取引の追加に失敗しました");
-      }
+      await saveTransaction(transaction);
     } catch (err) {
       setError(
         err instanceof Error
