@@ -23,7 +23,13 @@ function InputPage() {
   const [tag, setTag] = React.useState("");
   const [item, setItem] = React.useState("");
   const [amount, setAmount] = React.useState("");
-  const [date, setDate] = React.useState("");
+  const [date, setDate] = React.useState(() => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, "0");
+    const day = String(today.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  });
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const isSubmittingRef = React.useRef(false);
   const { addTransaction, createTransactionData } = useAddTransactions();

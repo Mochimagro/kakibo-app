@@ -6,7 +6,8 @@ import type { Transaction } from "./hooks/transactions";
 
 export const RecentIncomeTransactionList: React.FC<{
   maxTransactions: number;
-}> = ({ maxTransactions }) => {
+  month?: string;
+}> = ({ maxTransactions, month }) => {
   const { transactionList, isLoading } = useIncomeTransactions();
 
   if (isLoading) {
@@ -16,17 +17,21 @@ export const RecentIncomeTransactionList: React.FC<{
     return <Text>収入データがありません</Text>;
   }
 
-  const recentTransactions = transactionList.transactions.slice(
-    0,
-    maxTransactions,
-  );
+  const recentTransactions = transactionList.transactions
+    .filter((transaction) => !month || transaction.date.startsWith(month))
+    .slice(0, maxTransactions);
 
-  return <TransactionList transactions={recentTransactions} />;
+  return recentTransactions.length ? (
+    <TransactionList transactions={recentTransactions} />
+  ) : (
+    <Text>当月の収入データがありません</Text>
+  );
 };
 
 export const RecentExpenseTransactionList: React.FC<{
   maxTransactions: number;
-}> = ({ maxTransactions }) => {
+  month?: string;
+}> = ({ maxTransactions, month }) => {
   const { transactionList, isLoading } = useExpenseTransactions();
 
   if (isLoading) {
@@ -36,11 +41,14 @@ export const RecentExpenseTransactionList: React.FC<{
     return <Text>支出データがありません</Text>;
   }
 
-  const recentTransactions = transactionList.transactions.slice(
-    0,
-    maxTransactions,
+  const recentTransactions = transactionList.transactions
+    .filter((transaction) => !month || transaction.date.startsWith(month))
+    .slice(0, maxTransactions);
+  return recentTransactions.length ? (
+    <TransactionList transactions={recentTransactions} />
+  ) : (
+    <Text>当月の支出データがありません</Text>
   );
-  return <TransactionList transactions={recentTransactions} />;
 };
 
 const TransactionList: React.FC<{ transactions: Transaction[] }> = ({
