@@ -73,7 +73,7 @@ function InputPage() {
 
   return (
     <Flex minH="100vh" direction="column">
-      <Header />
+      <Header pageName="データ追加" />
       <Container as="main" maxW="4xl" width="full" flex="1" py={6}>
         <Center>
           <VStack

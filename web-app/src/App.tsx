@@ -19,7 +19,7 @@ function App() {
 function HomePage() {
   return (
     <Flex minH="100vh" direction="column">
-      <Header />
+      <Header pageName="トップ" />
       <MonthData />
       <Footer />
     </Flex>

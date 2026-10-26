@@ -37,7 +37,7 @@ function DatePage() {
 
   return (
     <Flex minH="100vh" direction="column">
-      <Header />
+      <Header pageName="日付順" />
       <Container as="main" maxW="4xl" width="full" flex="1" py={8}>
         <Heading size="lg" mb={4}>
           日付順
