@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router";
 import InputPage from "./pases/Input";
 import DatePage from "./pases/Date";
-import MonthPage from "./pases/MonthPage";
+import MonthData from "./pases/MonthPage";
 import { Flex } from "@chakra-ui/react";
 
 import { Header } from "./components/Header";
@@ -20,7 +20,7 @@ function HomePage() {
   return (
     <Flex minH="100vh" direction="column">
       <Header />
-      <MonthPage />
+      <MonthData />
       <Footer />
     </Flex>
   );

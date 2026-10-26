@@ -13,7 +13,7 @@ import {
 import { TotalTransactions } from "../TotalTransactions";
 import { getTransactions } from "../services/transactions";
 
-export default function MonthPage() {
+export default function MonthData() {
   const navigate = useNavigate();
   const [transactions, setTransactions] = useState<Transaction[]>();
   const [transactionsError, setTransactionsError] = useState<Error | null>(
