@@ -13,10 +13,13 @@ type Transaction = {
 export const RecentIncomeTransactionList: React.FC<{
   maxTransactions: number;
 }> = ({ maxTransactions }) => {
-  const { transactionList } = useIncomeTransactions();
+  const { transactionList, isLoading } = useIncomeTransactions();
 
+  if (isLoading) {
+    return <Text>データ読み込み中...</Text>;
+  }
   if (!transactionList) {
-    return <text>収入データがありません</text>;
+    return <Text>収入データがありません</Text>;
   }
 
   const recentTransactions = transactionList.transactions.slice(
@@ -30,9 +33,13 @@ export const RecentIncomeTransactionList: React.FC<{
 export const RecentExpenseTransactionList: React.FC<{
   maxTransactions: number;
 }> = ({ maxTransactions }) => {
-  const { transactionList } = useExpenseTransactions();
+  const { transactionList, isLoading } = useExpenseTransactions();
+
+  if (isLoading) {
+    return <Text>データ読み込み中...</Text>;
+  }
   if (!transactionList) {
-    return <text>支出データがありません</text>;
+    return <Text>支出データがありません</Text>;
   }
 
   const recentTransactions = transactionList.transactions.slice(

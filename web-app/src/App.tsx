@@ -41,7 +41,7 @@ function HomePage() {
           シンプル家計簿
         </Text>
       </Box>
-      <Container as="main" maxW="4xl" py={6}>
+      <Container as="main" maxW="4xl" py={8}>
         <Flex justify="flex-end">
           <Button
             colorPalette="teal"
@@ -52,7 +52,7 @@ function HomePage() {
             登録
           </Button>
         </Flex>
-        <SummaryCard title="収支履歴">
+        <SummaryCard title="収入履歴">
           <RecentIncomeTransactionList maxTransactions={3} />
         </SummaryCard>
         <SummaryCard title="支出履歴">
