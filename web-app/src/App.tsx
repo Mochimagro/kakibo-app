@@ -1,12 +1,4 @@
-import {
-  Box,
-  Button,
-  Container,
-  Text,
-  Flex,
-  Card,
-  Heading,
-} from "@chakra-ui/react";
+import { Button, Container, Flex, Card, Heading } from "@chakra-ui/react";
 import { FaPlus } from "react-icons/fa";
 import { Route, Routes, useNavigate } from "react-router";
 import InputPage from "./pases/Input";
@@ -16,6 +8,8 @@ import {
   RecentIncomeTransactionList,
 } from "./TransactionList";
 import { TotalTransactions } from "./TotalTransactions";
+import { Header } from "./components/Header";
+import { Footer } from "./components/Footer";
 
 function App() {
   return (
@@ -31,36 +25,28 @@ function HomePage() {
   const navigate = useNavigate();
 
   return (
-    <>
-      <Box
-        as="header"
-        bg="teal.500"
-        color="white"
-        py={4}
-        textAlign="center"
-        boxShadow="md"
-      >
-        <Text fontSize="xl" fontWeight="bold">
-          シンプル家計簿
-        </Text>
-      </Box>
+    <Flex minH="100vh" direction="column">
+      <Header />
       <Container
         as="main"
         maxW="4xl"
+        width="full"
+        flex="1"
         py={8}
         display="flex"
         flexDirection="column"
         gap={4}
       >
         <TotalTransactions />
+        <Flex width="full" align="stretch" gap={4}>
+          <SummaryCard title="収入履歴">
+            <RecentIncomeTransactionList maxTransactions={3} />
+          </SummaryCard>
+          <SummaryCard title="支出履歴">
+            <RecentExpenseTransactionList maxTransactions={3} />
+          </SummaryCard>
+        </Flex>
         <Flex justify="flex-end" gap={2}>
-          <Button
-            variant="outline"
-            fontWeight="bold"
-            onClick={() => navigate("/date")}
-          >
-            日付順
-          </Button>
           <Button
             colorPalette="teal"
             fontWeight="bold"
@@ -70,16 +56,10 @@ function HomePage() {
             登録
           </Button>
         </Flex>
-        <Flex width="full" align="stretch" gap={4}>
-          <SummaryCard title="収入履歴">
-            <RecentIncomeTransactionList maxTransactions={3} />
-          </SummaryCard>
-          <SummaryCard title="支出履歴">
-            <RecentExpenseTransactionList maxTransactions={3} />
-          </SummaryCard>
-        </Flex>
       </Container>
-    </>
+
+      <Footer />
+    </Flex>
   );
 }
 

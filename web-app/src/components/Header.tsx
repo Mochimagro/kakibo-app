@@ -1,18 +1,22 @@
-import { Box, Text } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
+import { SideMenu } from "./SideMenu";
 
 export function Header() {
   return (
-    <Box
+    <Flex
       as="header"
+      position="relative"
+      justify="center"
+      align="center"
       bg="teal.500"
       color="white"
       py={4}
-      textAlign="center"
       boxShadow="md"
     >
       <Text fontSize="xl" fontWeight="bold">
         シンプル家計簿
       </Text>
-    </Box>
+      <SideMenu />
+    </Flex>
   );
 }

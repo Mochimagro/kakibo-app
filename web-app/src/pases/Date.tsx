@@ -1,8 +1,10 @@
 import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
 import type { Transaction, TransactionListInfo } from "@/hooks/transactions";
 import {
   Card,
   Container,
+  Flex,
   Heading,
   Stack,
   Text,
@@ -38,9 +40,9 @@ function DatePage() {
   }, []);
 
   return (
-    <>
+    <Flex minH="100vh" direction="column">
       <Header />
-      <Container as="main" maxW="4xl" py={8}>
+      <Container as="main" maxW="4xl" width="full" flex="1" py={8}>
         <Heading size="lg" mb={4}>
           日付順
         </Heading>
@@ -58,7 +60,8 @@ function DatePage() {
           <Text>取引データがありません</Text>
         )}
       </Container>
-    </>
+      <Footer />
+    </Flex>
   );
 }
 

@@ -1,10 +1,12 @@
 import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
 import { useAddTransactions } from "@/hooks/useAddTransactions";
 import {
   Button,
   Center,
   Container,
   Field,
+  Flex,
   HStack,
   Input,
   RadioGroup,
@@ -63,9 +65,9 @@ function InputPage() {
   };
 
   return (
-    <>
+    <Flex minH="100vh" direction="column">
       <Header />
-      <Container as="main" maxW="4xl" py={6}>
+      <Container as="main" maxW="4xl" width="full" flex="1" py={6}>
         <Center>
           <VStack
             maxW="xl"
@@ -152,7 +154,8 @@ function InputPage() {
           </VStack>
         </Center>
       </Container>
-    </>
+      <Footer />
+    </Flex>
   );
 }
 
