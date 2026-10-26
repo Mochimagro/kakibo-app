@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router";
 import InputPage from "./pases/Input";
 import DatePage from "./pases/Date";
-import MonthData from "./pases/MonthPage";
+import MonthData from "./pases/MonthData";
 import { Flex } from "@chakra-ui/react";
 
 import { Header } from "./components/Header";
