@@ -14,6 +14,7 @@ import {
   RecentExpenseTransactionList,
   RecentIncomeTransactionList,
 } from "./TransactionList";
+import { TotalTransactions } from "./TotalTransactions";
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function HomePage() {
         </Text>
       </Box>
       <Container as="main" maxW="4xl" py={8}>
+        <TotalTransactions />
         <Flex justify="flex-end">
           <Button
             colorPalette="teal"
