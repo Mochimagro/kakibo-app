@@ -10,6 +10,7 @@ import {
 import { FaPlus } from "react-icons/fa";
 import { Route, Routes, useNavigate } from "react-router";
 import InputPage from "./pases/Input";
+import DatePage from "./pases/Date";
 import {
   RecentExpenseTransactionList,
   RecentIncomeTransactionList,
@@ -21,6 +22,7 @@ function App() {
     <Routes>
       <Route path="/" element={<HomePage />} />
       <Route path="/input" element={<InputPage />} />
+      <Route path="/date" element={<DatePage />} />
     </Routes>
   );
 }
@@ -51,7 +53,14 @@ function HomePage() {
         gap={4}
       >
         <TotalTransactions />
-        <Flex justify="flex-end">
+        <Flex justify="flex-end" gap={2}>
+          <Button
+            variant="outline"
+            fontWeight="bold"
+            onClick={() => navigate("/date")}
+          >
+            日付順
+          </Button>
           <Button
             colorPalette="teal"
             fontWeight="bold"
