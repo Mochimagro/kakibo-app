@@ -10,7 +10,7 @@ import {
   Flex,
   HStack,
   Input,
-  RadioGroup,
+  NativeSelect,
   VStack,
 } from "@chakra-ui/react";
 import React from "react";
@@ -83,27 +83,6 @@ function InputPage() {
             as="form"
             onSubmit={handleSubmit}
           >
-            {/* 支出・収入の選択ボタン */}
-            <RadioGroup.Root
-              defaultValue="expense"
-              onValueChange={(e) =>
-                setTransactionType(e.value as TransactionType)
-              }
-            >
-              <HStack gap={4}>
-                <RadioGroup.Item value="expense">
-                  <RadioGroup.ItemHiddenInput />
-                  <RadioGroup.ItemIndicator />
-                  <RadioGroup.ItemText>支出</RadioGroup.ItemText>
-                </RadioGroup.Item>
-                <RadioGroup.Item value="income">
-                  <RadioGroup.ItemHiddenInput />
-                  <RadioGroup.ItemIndicator />
-                  <RadioGroup.ItemText>収入</RadioGroup.ItemText>
-                </RadioGroup.Item>
-              </HStack>
-            </RadioGroup.Root>
-
             {/* フォーム部分 */}
             <TagInput value={tag} onChange={setTag} />
 
@@ -117,16 +96,45 @@ function InputPage() {
               />
             </Field.Root>
 
-            <Field.Root required>
-              <Field.Label>金額</Field.Label>
-              <Input
-                type="number"
-                placeholder="金額を入力してください"
-                value={amount}
-                onChange={(e) => setAmount(e.target.value)}
-                min="0"
-              />
-            </Field.Root>
+            <HStack width="full" align="end" gap={3}>
+              <Field.Root required flex={1}>
+                <Field.Label>金額</Field.Label>
+                <Input
+                  type="number"
+                  placeholder="金額を入力してください"
+                  value={amount}
+                  onChange={(e) => setAmount(e.target.value)}
+                  min="0"
+                />
+              </Field.Root>
+
+              <Field.Root required width="32">
+                <NativeSelect.Root>
+                  <NativeSelect.Field
+                    value={transactionType}
+                    background={
+                      transactionType === "income" ? "green.200" : "red.200"
+                    }
+                    color={
+                      transactionType === "income" ? "green.500" : "red.500"
+                    }
+                    onChange={(e) =>
+                      setTransactionType(
+                        e.target.value === "income" ? "income" : "expense",
+                      )
+                    }
+                  >
+                    <option value="expense" style={{ color: "initial" }}>
+                      支出
+                    </option>
+                    <option value="income" style={{ color: "initial" }}>
+                      収入
+                    </option>
+                  </NativeSelect.Field>
+                  <NativeSelect.Indicator />
+                </NativeSelect.Root>
+              </Field.Root>
+            </HStack>
 
             <Field.Root required>
               <Field.Label>日付</Field.Label>
