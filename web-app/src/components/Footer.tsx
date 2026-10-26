@@ -11,7 +11,9 @@ export function Footer() {
       borderTopWidth="1px"
       borderColor="gray.200"
     >
-      <Text fontSize="sm">© {new Date().getFullYear()} シンプル家計簿</Text>
+      <Text fontSize="sm">
+        © {new Date().getFullYear()} つくりながら覚える Webアプリ開発入門
+      </Text>
     </Flex>
   );
 }

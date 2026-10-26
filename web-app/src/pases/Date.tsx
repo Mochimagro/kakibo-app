@@ -52,8 +52,20 @@ function DatePage() {
           <Text>取引データを読み込めませんでした: {error.message}</Text>
         ) : transactions?.length ? (
           <Stack gap={4}>
-            {transactions.map((transaction) => (
-              <TransactionCard key={transaction.id} transaction={transaction} />
+            {groupTransactionsByDate(transactions).map((group) => (
+              <Stack key={group.date} gap={2}>
+                <Text fontWeight="bold">
+                  {group.incomeTotal !== 0 && group.expenseTotal !== 0
+                    ? `${formatAmount(group.incomeTotal)} + ${formatAmount(group.expenseTotal)} = ${formatAmount(group.total)}`
+                    : `小計: ${formatAmount(group.total)}`}
+                </Text>
+                {group.transactions.map((transaction) => (
+                  <TransactionCard
+                    key={transaction.id}
+                    transaction={transaction}
+                  />
+                ))}
+              </Stack>
             ))}
           </Stack>
         ) : (
@@ -93,6 +105,46 @@ const TransactionCard: React.FC<{ transaction: Transaction }> = ({
 const formatDate = (dateString: string): string => {
   const [year, month, day] = dateString.split("-");
   return `${year}年${month}月${day}日`;
+};
+
+const formatAmount = (amount: number): string =>
+  `${amount.toLocaleString()}円`;
+
+const groupTransactionsByDate = (transactions: Transaction[]) => {
+  const groups = new Map<
+    string,
+    {
+      date: string;
+      transactions: Transaction[];
+      incomeTotal: number;
+      expenseTotal: number;
+      total: number;
+    }
+  >();
+
+  for (const transaction of transactions) {
+    let group = groups.get(transaction.date);
+    if (!group) {
+      group = {
+        date: transaction.date,
+        transactions: [],
+        incomeTotal: 0,
+        expenseTotal: 0,
+        total: 0,
+      };
+      groups.set(transaction.date, group);
+    }
+
+    group.transactions.push(transaction);
+    if (transaction.amount > 0) {
+      group.incomeTotal += transaction.amount;
+    } else if (transaction.amount < 0) {
+      group.expenseTotal += transaction.amount;
+    }
+    group.total += transaction.amount;
+  }
+
+  return [...groups.values()];
 };
 
 export default DatePage;
