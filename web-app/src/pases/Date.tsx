@@ -3,6 +3,7 @@ import { Footer } from "@/components/Footer";
 import type { Transaction } from "@/hooks/transactions";
 import { getTransactions } from "@/services/transactions";
 import {
+  Box,
   Card,
   Container,
   Flex,
@@ -49,11 +50,33 @@ function DatePage() {
           <Stack gap={4}>
             {groupTransactionsByDate(transactions).map((group) => (
               <Stack key={group.date} gap={2}>
-                <Text fontWeight="bold">
-                  {group.incomeTotal !== 0 && group.expenseTotal !== 0
-                    ? `${formatAmount(group.incomeTotal)} + ${formatAmount(group.expenseTotal)} = ${formatAmount(group.total)}`
-                    : `小計: ${formatAmount(group.total)}`}
-                </Text>
+                <Flex align="center" gap={2}>
+                  <Text fontWeight="bold" whiteSpace="nowrap">
+                    {formatDate(group.date)} :
+                  </Text>
+                  <Box flex="1" h="1px" bg="gray.300" />
+                  <Text fontWeight="bold">
+                    {" "}
+                    {group.incomeTotal !== 0 && group.expenseTotal !== 0
+                      ? `${formatAmount(group.incomeTotal)} ${formatAmount(group.expenseTotal)} = `
+                      : ""}
+                  </Text>
+                  <Text
+                    fontWeight="bold"
+                    fontSize={24}
+                    as="span"
+                    color={
+                      group.total > 0
+                        ? "green.500"
+                        : group.total < 0
+                          ? "red.500"
+                          : undefined
+                    }
+                  >
+                    {formatAmount(group.total)}
+                  </Text>
+                </Flex>
+
                 {group.transactions.map((transaction) => (
                   <TransactionCard
                     key={transaction.id}
@@ -102,8 +125,7 @@ const formatDate = (dateString: string): string => {
   return `${year}年${month}月${day}日`;
 };
 
-const formatAmount = (amount: number): string =>
-  `${amount.toLocaleString()}円`;
+const formatAmount = (amount: number): string => `${amount.toLocaleString()}円`;
 
 const groupTransactionsByDate = (transactions: Transaction[]) => {
   const groups = new Map<
